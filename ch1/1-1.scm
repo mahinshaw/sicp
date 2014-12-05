@@ -53,5 +53,16 @@ b ;4
    (* 3 (- 6 2) (- 2 7)))
 
 ;; Exercise 1.3
+(define (square x) (* x x))
+
+(define (sum-of-squares x y)
+  (+ (square x) (square y)))
+
 (define (bigger-sum-squares x y z)
-  ())
+  (cond ((and (< x y) (< x z)) (sum-of-squares y z))
+        ((and (< y x) (< y z)) (sum-of-squares x z))
+        (else (sum-of-squares y x))))
+
+(= (sum-of-squares 5 6) (bigger-sum-squares 4 5 6))
+(= (sum-of-squares 5 6) (bigger-sum-squares 5 3 6))
+(= (sum-of-squares 5 6) (bigger-sum-squares 5 6 3))
