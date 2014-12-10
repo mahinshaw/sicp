@@ -46,4 +46,65 @@ b ;4
 ;; not finish evaluation.
 
 ;;; Exercise 1.7
-;;
+(define (sqrt-iter guess x)
+  (if (better-good-enough? guess x)
+      guess
+      (sqrt-iter (improve guess x)
+                 x)))
+
+(define (improve guess x)
+  (average guess (/ x guess)))
+
+(define (average x y)
+  (/ (+ x y) 2))
+
+; Tolerance of 0.001
+; guess refers to sqrt value.
+(define (good-enough? guess x)
+  (< (abs (- (square guess) x)) 0.001))
+
+;; A better good-enougn where a new guess is calculated and provided as a fraction of the guess (proportionality).
+(define (better-good-enough? guess x)
+  (< (abs (/ (- (improve guess x)
+                guess)
+             guess)) 0.001))
+
+(define (sqrt x)
+  (sqrt-iter 1.0 x))
+
+;; very small sample
+(sqrt 0.0001)
+; Output value Value: .03230844833048122
+; Actual value: 0.01
+;; very large value.
+(sqrt 1000000000000000)
+; Output Value: 31622.776601684047
+; Actual value: Did not finish. Exceeds floating point precision.
+
+;;; Exercise 1.8
+(define (cbrt-iter guess x)
+  (if (cbrt-good-enough? guess x)
+      guess
+      (cbrt-iter (improve guess x)
+                 x)))
+
+;; We apply newtons function to our improve method.
+(define (improve guess x)
+  (/ (+ (/ x (square guess))
+        (* guess 2))
+     3))
+
+(define (average x y)
+  (/ (+ x y) 2))
+
+;; A better good-enougn where a new guess is calculated and provided as a fraction of the guess (proportionality).
+(define (cbrt-good-enough? guess x)
+  (< (abs (/ (- (improve guess x)
+                guess)
+             guess)) 0.001))
+
+(define (cbrt x)
+  (cbrt-iter 1.0 x))
+
+(cbrt 27)
+(cbrt 64)

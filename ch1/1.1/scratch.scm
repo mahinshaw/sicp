@@ -36,7 +36,7 @@
 ;; 1.1.7
 ; Square root by Newton's method of approoximation.
 (define (sqrt-iter guess x)
-  (new-if (good-enough? guess x)
+  (if (good-enough? guess x)
       guess
       (sqrt-iter (improve guess x)
                  x)))
@@ -61,3 +61,22 @@
   (cond (predicate then-clause)
         (else else-clause)))
 
+;; 1.1.8
+;; sqrt defined with block structure.
+;; i.e. scope functions.
+;; This function could also remove the need for having x bound to every function call and use it as a free variable.
+(define (sqrt x)
+  (define (improve guess x)
+    (average guess (/ x guess)))
+  (define (average x y)
+    (/ (+ x y) 2))
+  (define (good-enough? guess x)
+    (< (abs (- (square guess) x)) 0.001))
+  (define (sqrt-iter guess x)
+    (if (good-enough? guess x)
+        guess
+        (sqrt-iter (improve guess x)
+                   x)))
+  (sqrt-iter 1.0 x))
+
+(sqrt 16)
